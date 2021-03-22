@@ -1,0 +1,11 @@
+phppath=/usr/bin/php
+
+rm -rf var/cache/*
+rm -rf var/log/*
+chmod 777 -R var/cache
+chmod 777 -R var/log
+
+rm -rf var/cache/*
+rm -rf var/logs/*
+chmod 777 -R var/cache
+chmod 777 -R var/log

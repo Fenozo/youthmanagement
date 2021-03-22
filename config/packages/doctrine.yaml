@@ -1,0 +1,25 @@
+doctrine:
+    dbal:
+        # url: '%env(resolve:DATABASE_URL)%'
+        # url:                  mysql://db_user:db_password@127.0.0.1:3306/db_name
+        driver: 'pdo_mysql'
+        server_version: '15.1'
+        port: 1234
+        dbname: youthmanagement
+        password: password
+        user: root
+
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        #server_version: '13'
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
