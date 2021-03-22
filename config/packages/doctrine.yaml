@@ -3,7 +3,7 @@ doctrine:
         # url: '%env(resolve:DATABASE_URL)%'
         # url:                  mysql://db_user:db_password@127.0.0.1:3306/db_name
         driver: 'pdo_mysql'
-        server_version: '15.1'
+        server_version: '10.5.9'
         port: 1234
         dbname: youthmanagement
         password: password

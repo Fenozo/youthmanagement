@@ -5,6 +5,8 @@ rm -rf var/log/*
 chmod 777 -R var/cache
 chmod 777 -R var/log
 
+php bin/console doctrine:schema:update --force
+
 rm -rf var/cache/*
 rm -rf var/logs/*
 chmod 777 -R var/cache
