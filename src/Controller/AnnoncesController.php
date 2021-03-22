@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Images;
 use App\Entity\Annonces;
 use App\Form\AnnoncesType;
 use App\Repository\AnnoncesRepository;
@@ -36,6 +37,26 @@ class AnnoncesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Recupere les images transmises
+            $images = $form->get('images')->getData();
+
+            // On boucles sur les images
+            foreach ($images as $image) {
+                // On genere un nouveau nom de fichier
+                $fichier = md5(uniqid()). '.'. $image->guessExtension();
+
+                // On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('annonce_directory'),
+                    $fichier
+                );
+
+                // On stocke l'image dans la base de donnees (son nom)
+                $img = new Images();
+                $img->setName($fichier);
+                $annonce->addImage($img);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($annonce);
             $entityManager->flush();
