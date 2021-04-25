@@ -5,6 +5,14 @@
 {% block title %}New Annonces{% endblock %}
 
 {% block body %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-warning">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+
     <h1>Create new Annonces</h1>
 
     {{ include('annonces/_form.html.twig') }}

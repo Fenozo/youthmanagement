@@ -23,7 +23,7 @@ class AnnoncesController extends AbstractController
     public function index(AnnoncesRepository $annoncesRepository): Response
     {
         return $this->render('annonces/index.html.twig', [
-            'annonces' => $annoncesRepository->findAll(),
+            'annonces' => $annoncesRepository->getListAnnonces(),
         ]);
     }
 
@@ -40,10 +40,23 @@ class AnnoncesController extends AbstractController
             // Recupere les images transmises
             $images = $form->get('images')->getData();
 
+            if (!$annonce->getTitle()) {
+                $this->addFlash('error', 'Title cannot be null');
+                return $this->redirectToRoute('annonces_new');
+            }
+            if (!$annonce->getTitle()) {
+                $this->addFlash('error', 'Description content cannot be null');
+                return $this->redirectToRoute('annonces_new');
+            }
             // On boucles sur les images
             foreach ($images as $image) {
                 // On genere un nouveau nom de fichier
                 $fichier = md5(uniqid()). '.'. $image->guessExtension();
+                
+                if (!in_array($image->guessExtension(), array('jpg','jpeg', 'png'))) {
+                    $this->addFlash('error', 'File must be to have extension jpeg, jpg or png');
+                    return $this->redirectToRoute('annonces_new');
+                }
 
                 // On copie le fichier dans le dossier uploads
                 $image->move(
@@ -75,8 +88,27 @@ class AnnoncesController extends AbstractController
      */
     public function show(Annonces $annonce): Response
     {
+        $images = $annonce->getImages();
+        $image_name = null;
+        $exist = false;
+        $annonce_folder = null;
+        foreach($images as $key  => $image) {
+            if ($key == 0 && !is_null( $image->getName())) {
+                $image_name = $image->getName();
+                $annonce_folder = '/uploads/annonces';
+                $exist = true;
+            } else {
+                break;
+            }
+        }
+
         return $this->render('annonces/show.html.twig', [
-            'annonce' => $annonce,
+            'annonce'   => $annonce,
+            'image'     => [
+                'exist'     => $exist,
+                'name'      => $image_name,
+                'folder'    => $annonce_folder,
+            ]
         ]);
     }
 

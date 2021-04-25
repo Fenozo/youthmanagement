@@ -36,6 +36,29 @@ class AnnoncesRepository extends ServiceEntityRepository
     }
     */
 
+    public function getListAnnonces  ( $offset = 1 ) 
+    {
+        $qb = $this->createQueryBuilder('a');
+
+            $qb
+                ->select('a.id, a.title, a.content')
+                ->addSelect('
+                    (SELECT count(virtual_annonces.id)
+                    FROM App\Entity\Annonces as virtual_annonces) as cc
+                ')
+                ->from('App\Entity\Annonces', 'an')
+            ;
+            
+            $qb->setFirstResult( $offset );
+
+            $qb->setMaxResults(10);
+
+            // dump($qb->getQuery()->getResult());
+            // exit;
+
+        return $qb->getQuery()->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Annonces
     {

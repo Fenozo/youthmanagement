@@ -5,22 +5,23 @@
 {% block body %}
     <h1>Annonces</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ annonce.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ annonce.title }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ annonce.content }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-md-6">
+            <ul>
+                <li>{{ annonce.id }}</li>
+                <li>{{ annonce.title }}</li>
+                <li>{{ annonce.content }}</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            {% if image.exist == true %}
+                <div class="">
+                    <img width="100%" src="{{ image.folder ~ "/" ~ image.name }}" alt="{{ image.name }}" />
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
 
     <a href="{{ path('annonces_index') }}">back to list</a>
 

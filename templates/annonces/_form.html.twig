@@ -1,4 +1,29 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {# {{ form_widget(form) }} #}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-goup">
+                {# <i class="fa fa-calendar">{{ form_label(form.title) }}</i>  #}
+                <small>{{ form_help(form.title) }}</small>
+                {{ form_row(form.title, {attr:{ class: 'form-control'}}) }}
+                
+            </div>
+
+            <div class="form-goup">
+                {{ form_row(form.content, {attr:{required: false,  class: 'form-control'}}) }}
+                {# <small>{{ form_help(form.content) }}</small> #}
+                {# <div class="form-error">
+                    {{ form_errors(form.content) }}
+                </div> #}
+            </div>
+
+            <div  class="form-goup">
+            {{form_row(form.images, { attr: {required: false, class: 'form-control'}})  }}
+            </div>
+
+            <div  class="form-goup">
+                <button class="btn">{{ button_label|default('Save') }}</button>
+            </div>
+        </div>
+    </div>
 {{ form_end(form) }}
