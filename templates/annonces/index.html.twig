@@ -4,7 +4,9 @@
 
 {% block body %}
     <h1>Annonces index</h1>
-
+    <div>
+        <a href="{{ path('annonces_new') }}">Create new</a>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -15,7 +17,8 @@
             </tr>
         </thead>
         <tbody>
-        {% for annonce in annonces %}
+
+        {% for annonce in annonces.datas %}
             <tr>
                 <td>{{ annonce.id }}</td>
                 <td>{{ annonce.title }}</td>
@@ -32,6 +35,11 @@
         {% endfor %}
         </tbody>
     </table>
+
+    
+    {{ 
+        paginator(annonces.paginate, 'annonces_index')
+     }}
 
     <a href="{{ path('annonces_new') }}">Create new</a>
 {% endblock %}

@@ -22,8 +22,50 @@ class AnnoncesController extends AbstractController
      */
     public function index(AnnoncesRepository $annoncesRepository): Response
     {
+
+
+        $request = Request::createFromGlobals();
+        $parPage = 10;
+
+        $currentPage = $request->get('page', 1);
+
+
+
+        $annonces = array();
+
+        $offset = 1;
+
+        if ($currentPage != null ) {
+            $offset = $currentPage * $parPage  - $parPage ;
+        }
+
+        $datas = $annoncesRepository->getListAnnonces($parPage, $offset);
+
+        $count = null;
+
+        foreach($datas as $key => $annonce) {
+            $annonces[$annonce['id']] = [
+                'id'        => $annonce['id'],
+                'title'     => $annonce['title'],
+                'content'   => $annonce['content'],
+            ];
+            if ($annonce['cc'] && $count === null) {
+                $count = $annonce['cc'];
+            }
+        }
+
+        $paginate = [
+            'nbpages'       => ceil($count/10),
+            'currentPage'   => $currentPage,
+        ];
+
         return $this->render('annonces/index.html.twig', [
-            'annonces' => $annoncesRepository->getListAnnonces(),
+            'annonces'  => [
+                'datas'     => $annonces, 
+                'count'     => $count,
+                'paginate'  => $paginate 
+            ],
+            
         ]);
     }
 

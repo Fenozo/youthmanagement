@@ -36,7 +36,7 @@ class AnnoncesRepository extends ServiceEntityRepository
     }
     */
 
-    public function getListAnnonces  ( $offset = 1 ) 
+    public function getListAnnonces  ( $parPage,  $offset = 1 ) 
     {
         $qb = $this->createQueryBuilder('a');
 
@@ -46,14 +46,16 @@ class AnnoncesRepository extends ServiceEntityRepository
                     (SELECT count(virtual_annonces.id)
                     FROM App\Entity\Annonces as virtual_annonces) as cc
                 ')
-                ->from('App\Entity\Annonces', 'an')
+                ->orderBy('a.id', 'DESC')
+                ->setMaxResults($parPage)
+                ->setFirstResult($offset)
             ;
             
-            $qb->setFirstResult( $offset );
+            // $qb->setFirstResult($offset );
 
-            $qb->setMaxResults(10);
+            // $qb->setMaxResults($parPage);
 
-            // dump($qb->getQuery()->getResult());
+            // dump($qb->getQuery()->getSQL());
             // exit;
 
         return $qb->getQuery()->getResult();
